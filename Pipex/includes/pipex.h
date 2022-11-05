@@ -6,7 +6,7 @@
 /*   By: jungchoi <jungchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 19:26:08 by jungchoi          #+#    #+#             */
-/*   Updated: 2022/11/03 17:31:10 by jungchoi         ###   ########.fr       */
+/*   Updated: 2022/11/05 20:25:32 by jungchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void	error_exit(char *str, int status);
 void	child_process(int *fd, char **argv, char **envp);
+void	parent_process(int *fd, char **argv, char **envp);
+void	error_exit(char *str, int status);
+
 void	execute_cmd(char *argv, char **envp);
 char	*get_path(char *cmd, char **envp);
-int		execve_test(void);
+void	free_split(char **str);
 
 #endif

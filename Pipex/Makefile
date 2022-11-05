@@ -6,7 +6,7 @@
 #    By: jungchoi <jungchoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 16:13:26 by jungchoi          #+#    #+#              #
-#    Updated: 2022/11/01 16:15:40 by jungchoi         ###   ########.fr        #
+#    Updated: 2022/11/05 16:05:39 by jungchoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ LIBFT_DIR = libs/libft
 LIBFT = libft.a
 
 SRCS = $(addprefix $(SRCS_DIR)/, \
-	pipex.c)
+	pipex.c \
+	execute.c)
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.c=.o)))
 

@@ -6,7 +6,7 @@
 /*   By: jungchoi <jungchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 19:26:14 by jungchoi          #+#    #+#             */
-/*   Updated: 2022/11/03 18:16:33 by jungchoi         ###   ########.fr       */
+/*   Updated: 2022/11/05 20:44:14 by jungchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,80 +26,56 @@ int	main(int argc, char *argv[], char *envp[])
 		error_exit("fork error\n", 1);
 	else if (pid == 0)
 		child_process(fd, argv, envp);
-
-	execute_cmd(argv[2], envp);
-	
+	waitpid(pid, NULL, WNOHANG);
+	parent_process(fd, argv, envp);
 	return (0);
-}
-
-void	execute_cmd(char *argv, char **envp)
-{
-	char	**split_cmd;
-	char	*cmd;
-	char	*path;
-
-	split_cmd = ft_split(argv, ' ');
-	cmd = ft_strjoin("/", split_cmd[0]);
-	printf("cmd : %s\n", cmd); // ls
-	path = get_path(cmd, envp);
-	if (!path)
-		error_exit("path error\n", 1);
-	printf("path : %s\n", path); // /bin/ls
-	if (execve(path, split_cmd, envp) == -1)
-		error_exit("execve error\n", 127);
-}
-
-char	*get_path(char *cmd, char **envp)
-{
-	int		i;
-	char	**split_path;
-	char	*path;
-	
-	i = 0;
-	while (envp[i] && (ft_strncmp("PATH", envp[i], 4) != 0))
-		i++;
-	// /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
-	split_path = ft_split(envp[i] + 5, ':');
-	i = 0;
-	while (split_path[i])
-	{
-		printf("split_path[%d] : %s\n", i, split_path[i]);
-		path = ft_strjoin(split_path[i], cmd);
-		if (!path)
-			return (NULL);
-		if (access(path, X_OK) == 0)
-			return (path);
-		free(path);
-		i++;
-	}
-	return (NULL);
 }
 
 void	child_process(int *fd, char **argv, char **envp)
 {
-	return ;
 	int	infile;
 
 	infile = open(argv[1], O_RDONLY);
 	if (infile == -1)
 		error_exit("open error\n", 1);
+	close(fd[0]); // 사용하지 않는 fd close
+	if (dup2(infile, STDIN_FILENO) == -1) // 표준입력을 infile로 변경
+		error_exit("dup2 error\n", 1);
+	close(infile);
+	
+	printf("child_process test1\n");
+	printf("fd[0] : %d, fd[1] : %d\n", fd[0], fd[1]);
+	if (dup2(fd[1], STDOUT_FILENO) == -1) // 표준출력을 pipe로 변경
+		error_exit("dup2 error\n", 1);
+	close(fd[1]);
+	printf("child_process test2\n");
+	
+	execute_cmd(argv[2], envp);
+}
+
+void	parent_process(int *fd, char **argv, char **envp)
+{
+	int	outfile;
+
+	outfile = open(argv[4], O_RDWR | O_CREAT | O_TRUNC);
+	if (outfile == -1)
+		error_exit("open error\n", 1);
+	close(fd[1]);
+	if (dup2(fd[0], STDIN_FILENO) == -1) // 표준입력을 pipe로 변경 
+		error_exit("dup2 error\n", 1);
 	close(fd[0]);
-	*envp = 0;
+	
+	printf("parent_process test2\n");
+	if (dup2(outfile, STDOUT_FILENO) == -1) // 표준출력을 outfile로 변경
+		error_exit("dup2 error\n", 1);
+	close(outfile);
+	printf("parent_process test3\n");
+
+	execute_cmd(argv[3], envp);
 }
 
 void	error_exit(char *str, int status)
 {
 	ft_putstr_fd(str, 2);
 	exit(status);
-}
-
-int	execve_test(void)
-{
-	char *arg1 = "-al";
-	char *arg2 = "/etc";
-	char *file = "ls";
-	char *argv[] = { file, arg1, arg2, NULL };
-
-	execve("/bin/ls", argv, NULL);
-	return (0);
 }

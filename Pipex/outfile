@@ -1,0 +1,4 @@
+parent_process test3
+cmd : /wc
+path : /usr/bin/wc
+      12
