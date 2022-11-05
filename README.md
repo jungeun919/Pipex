@@ -1,7 +1,15 @@
 ```bash
 $> ./pipex file1 cmd1 cmd2 file2
+$> < file1 cmd1 | cmd2 > file2
 ```
 
 ```bash
-$> < file1 cmd1 | cmd2 > file2
+$> ./pipex infile "ls -l" "wc -l" outfile
+$> < infile ls -l | wc -l > outfile
+
+$> ./pipex infile "cat" "grep hello" outfile
+$> < infile cat | grep hello > outfile
+
+$> ./pipex /dev/urandom "ls -al" "cat" outfile
+$> < /dev/urandom ls -al | cat > outfile
 ```
