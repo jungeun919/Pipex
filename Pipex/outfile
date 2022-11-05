@@ -1,4 +1,11 @@
-parent_process test3
-cmd : /wc
-path : /usr/bin/wc
-      12
+total 120
+drwxr-xr-x  10 jungchoi  2022_seoul    320 Nov  5 21:52 .
+drwxr-xr-x   5 jungchoi  2022_seoul    160 Nov  5 21:44 ..
+-rw-r--r--   1 jungchoi  2022_seoul   1627 Nov  5 16:05 Makefile
+drwxr-xr-x   3 jungchoi  2022_seoul     96 Nov  5 15:19 includes
+-rw-r--r--   1 jungchoi  2022_seoul     30 Nov  5 20:58 infile
+drwxr-xr-x   3 jungchoi  2022_seoul     96 Nov  5 15:19 libs
+drwxr-xr-x   4 jungchoi  2022_seoul    128 Nov  5 21:52 objs
+-rw-r--r--   1 jungchoi  2022_seoul      0 Nov  5 21:52 outfile
+-rwxr-xr-x   1 jungchoi  2022_seoul  51496 Nov  5 21:52 pipex
+drwxr-xr-x   4 jungchoi  2022_seoul    128 Nov  5 15:20 srcs

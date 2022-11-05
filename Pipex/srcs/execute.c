@@ -6,7 +6,7 @@
 /*   By: jungchoi <jungchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 15:20:11 by jungchoi          #+#    #+#             */
-/*   Updated: 2022/11/05 20:25:52 by jungchoi         ###   ########.fr       */
+/*   Updated: 2022/11/05 21:02:55 by jungchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ void	execute_cmd(char *argv, char **envp)
 
 	split_cmd = ft_split(argv, ' ');
 	cmd = ft_strjoin("/", split_cmd[0]);
-	printf("cmd : %s\n", cmd);
 	path = get_path(cmd, envp);
 	if (!path)
 		error_exit("path error\n", 1);
-	printf("path : %s\n", path);
 	if (execve(path, split_cmd, envp) == -1)
 		error_exit("execve error\n", 127);
 }

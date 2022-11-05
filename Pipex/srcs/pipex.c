@@ -6,7 +6,7 @@
 /*   By: jungchoi <jungchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 19:26:14 by jungchoi          #+#    #+#             */
-/*   Updated: 2022/11/05 20:44:14 by jungchoi         ###   ########.fr       */
+/*   Updated: 2022/11/05 21:52:36 by jungchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,9 @@ void	child_process(int *fd, char **argv, char **envp)
 	if (dup2(infile, STDIN_FILENO) == -1) // 표준입력을 infile로 변경
 		error_exit("dup2 error\n", 1);
 	close(infile);
-	
-	printf("child_process test1\n");
-	printf("fd[0] : %d, fd[1] : %d\n", fd[0], fd[1]);
 	if (dup2(fd[1], STDOUT_FILENO) == -1) // 표준출력을 pipe로 변경
 		error_exit("dup2 error\n", 1);
 	close(fd[1]);
-	printf("child_process test2\n");
-	
 	execute_cmd(argv[2], envp);
 }
 
@@ -64,13 +59,9 @@ void	parent_process(int *fd, char **argv, char **envp)
 	if (dup2(fd[0], STDIN_FILENO) == -1) // 표준입력을 pipe로 변경 
 		error_exit("dup2 error\n", 1);
 	close(fd[0]);
-	
-	printf("parent_process test2\n");
 	if (dup2(outfile, STDOUT_FILENO) == -1) // 표준출력을 outfile로 변경
 		error_exit("dup2 error\n", 1);
 	close(outfile);
-	printf("parent_process test3\n");
-
 	execute_cmd(argv[3], envp);
 }
 
