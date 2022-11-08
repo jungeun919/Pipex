@@ -6,7 +6,7 @@
 #    By: jungchoi <jungchoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 16:13:26 by jungchoi          #+#    #+#              #
-#    Updated: 2022/11/05 16:05:39 by jungchoi         ###   ########.fr        #
+#    Updated: 2022/11/08 17:21:45 by jungchoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,6 @@ CFLAGS = -Wall -Wextra -Werror -g
 INCLUDES_DIR = includes
 LIBS_DIR = libs
 SRCS_DIR = srcs
-OBJS_DIR = objs
 
 LIBFT_DIR = libs/libft
 LIBFT = libft.a
@@ -27,20 +26,34 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 	pipex.c \
 	execute.c)
 
-OBJS = $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.c=.o)))
+OBJS = $(SRCS:.c=.o)
+
+SRCS_BONUS = $(addprefix $(SRCS_DIR)/, \
+	pipex_bonus.c \
+	execute_bonus.c)
+
+OBJS_BONUS = $(SRCS_BONUS:.c=.o)
+
+ifdef WITH_BONUS
+	OBJ_FILES = $(OBJS_BONUS)
+else
+	OBJ_FILES = $(OBJS)
+endif
 
 all : $(NAME)
 
-$(NAME) : $(OBJS)
+bonus :
+	make WITH_BONUS=1 all
+
+$(NAME) : $(OBJ_FILES)
 	make -C $(LIBFT_DIR) all
-	$(CC) $(CFLAGS) $(OBJS) -I $(INCLUDES_DIR) -L $(LIBFT_DIR) -lft -o $@
+	$(CC) $(CFLAGS) $(OBJ_FILES) -I $(INCLUDES_DIR) -L $(LIBFT_DIR) -lft -o $@
 
 $(OBJS_DIR)/%.o : $(SRCS_DIR)/%.c
-	@mkdir $(OBJS_DIR) 2> /dev/null || true
 	$(CC) $(CFLAGS) -I $(INCLUDES_DIR) -I $(LIBFT_DIR) -c $< -o $@
 
 clean :
-	rm -rf $(OBJS_DIR)
+	rm -rf $(OBJS) $(OBJS_BONUS)
 	make -C $(LIBFT_DIR) clean
 
 fclean : clean
@@ -51,4 +64,4 @@ re :
 	make fclean
 	make all
 
-.PHONY = all clean fclean re
+.PHONY = all bonus clean fclean re
