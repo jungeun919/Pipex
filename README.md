@@ -37,3 +37,7 @@ $> cmd << LIMITER | cmd1 >> file
 $> ./pipex here_doc limiter "cat" "grep a" outfile
 $> cat << limiter | grep a >> outfile
 ```
+
+## Tester
+- [tester1](https://github.com/vfurmane/pipex-tester)
+- [tester2](https://github.com/Yoo0lh/pipex_tester_42)
