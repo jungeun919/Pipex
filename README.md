@@ -26,3 +26,14 @@ $> < file1 cmd1 | cmd2 | cmd3 ... | cmdn > file2
 $> ./pipex infile "cat" "grep hello" "wc -l" outfile
 $> < infile cat | grep hello | wc -l > outfile
 ```
+
+- support << and >> when the first param is "here_doc"
+```bash
+$> ./pipex here_doc LIMITER cmd cmd1 file
+$> cmd << LIMITER | cmd1 >> file
+```
+
+```bash
+$> ./pipex here_doc limiter "cat" "grep a" outfile
+$> cat << limiter | grep a >> outfile
+```
