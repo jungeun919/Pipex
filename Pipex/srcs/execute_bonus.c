@@ -6,7 +6,7 @@
 /*   By: jungchoi <jungchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 16:50:38 by jungchoi          #+#    #+#             */
-/*   Updated: 2022/11/08 17:08:25 by jungchoi         ###   ########.fr       */
+/*   Updated: 2022/11/14 11:55:47 by jungchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,10 @@ void	free_split(char **str)
 		i++;
 	}
 	free(str);
+}
+
+void	error_exit(char *str, int status)
+{
+	ft_putstr_fd(str, 2);
+	exit(status);
 }

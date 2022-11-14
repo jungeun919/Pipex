@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_heredoc.c                                    :+:      :+:    :+:   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jungchoi <jungchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 15:59:56 by jungchoi          #+#    #+#             */
-/*   Updated: 2022/11/10 17:33:56 by jungchoi         ###   ########.fr       */
+/*   Updated: 2022/11/14 12:03:27 by jungchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,68 +14,48 @@
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	int	i;
-	int	infile;
-	int	outfile;
+	t_info	info;
 
-	if (argc < 5)
-		error_exit("program must have more than five arguments\n", 1);
-	
-	if (ft_strncmp(argv[1], "here_doc", 9) == 0)
-	{
-		get_infile(argv[2]);
-		infile = open("here_doc_temp", O_RDONLY);
-		outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (infile == -1 || outfile == -1)
-			error_exit("open error\n", 1);
-		i = 3;
-	}
-	else
-	{
-		infile = open(argv[1], O_RDONLY);
-		outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (infile == -1 || outfile == -1)
-			error_exit("open error\n", 1);
-		i = 2;
-	}
-	
-	if (dup2(infile, STDIN_FILENO) == -1)
+	set_infile_and_outfile(argc, argv, &info);
+	if (dup2(info.infile, STDIN_FILENO) == -1)
 		error_exit("dup2 error\n", 1);
-	close(infile);
-	if (dup2(outfile, STDOUT_FILENO) == -1)
-		error_exit("dup2 error\n", 1);
-
-	while (i < argc - 2)
+	close(info.infile);
+	while (info.idx < argc - 2)
 	{
-		make_pipe(argv[i], envp);
-		i++;
+		make_pipe(argv[info.idx], envp);
+		info.idx++;
 	}
+	if (dup2(info.outfile, STDOUT_FILENO) == -1)
+		error_exit("dup2 error\n", 1);
 	execute_cmd(argv[argc - 2], envp);
 	return (0);
 }
 
-void	get_infile(char *limiter)
+void	set_infile_and_outfile(int argc, char **argv, t_info *info)
 {
-	int		infile;
-	char	*line;
-
-	infile = open("here_doc_temp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (infile == -1)
-		error_exit("open error\n", 1);
-	while (1)
+	if (ft_strncmp(argv[1], "here_doc", 9) == 0)
 	{
-		write(1, "> ", 2);
-		line = get_next_line(0);
-		if (ft_strncmp(line, limiter, ft_strlen(limiter) + 1) == 0)
-		{
-			free(line);
-			break ;
-		}
-		write(infile, line, ft_strlen(line));
-		write(infile, "\n", 1);
-		free(line);
+		if (argc < 6)
+			error_exit("argument error\n", 1);
+		get_infile(argv[2]);
+		info->infile = open("here_doc_temp", O_RDONLY);
+		info->outfile = open(argv[argc - 1], \
+			O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (info->infile == -1 || info->outfile == -1)
+			error_exit("open error\n", 1);
+		info->idx = 3;
 	}
-	close(infile);
+	else
+	{
+		if (argc < 5)
+			error_exit("arguments error\n", 1);
+		info->infile = open(argv[1], O_RDONLY);
+		info->outfile = open(argv[argc - 1], \
+			O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (info->infile == -1 || info->outfile == -1)
+			error_exit("open error\n", 1);
+		info->idx = 2;
+	}
 }
 
 void	make_pipe(char *cmd, char **envp)
@@ -109,10 +89,4 @@ void	parent_process(int *fd)
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 		error_exit("dup2 error\n", 1);
 	close(fd[0]);
-}
-
-void	error_exit(char *str, int status)
-{
-	ft_putstr_fd(str, 2);
-	exit(status);
 }

@@ -6,7 +6,7 @@
 #    By: jungchoi <jungchoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 16:13:26 by jungchoi          #+#    #+#              #
-#    Updated: 2022/11/10 17:34:51 by jungchoi         ###   ########.fr        #
+#    Updated: 2022/11/14 12:06:11 by jungchoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ OBJS = $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.c=.o)))
 SRCS_BONUS = $(addprefix $(SRCS_DIR)/, \
 	pipex_bonus.c \
 	execute_bonus.c \
-	get_next_line.c)
+	get_next_line.c \
+	heredoc_bonus.c)
 
 OBJS_BONUS = $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS_BONUS:.c=.o)))
 

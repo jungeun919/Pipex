@@ -6,7 +6,7 @@
 /*   By: jungchoi <jungchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 19:26:14 by jungchoi          #+#    #+#             */
-/*   Updated: 2022/11/10 19:03:57 by jungchoi         ###   ########.fr       */
+/*   Updated: 2022/11/14 11:58:20 by jungchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ void	child_process(int *fd, char **argv, char **envp)
 	infile = open(argv[1], O_RDONLY);
 	if (infile == -1)
 		error_exit("open error\n", 1);
-	close(fd[0]); // 사용하지 않는 fd close
-	if (dup2(infile, STDIN_FILENO) == -1) // 표준입력을 infile로 변경
+	close(fd[0]);
+	if (dup2(infile, STDIN_FILENO) == -1)
 		error_exit("dup2 error\n", 1);
 	close(infile);
-	if (dup2(fd[1], STDOUT_FILENO) == -1) // 표준출력을 pipe로 변경
+	if (dup2(fd[1], STDOUT_FILENO) == -1)
 		error_exit("dup2 error\n", 1);
 	close(fd[1]);
 	execute_cmd(argv[2], envp);
@@ -56,10 +56,10 @@ void	parent_process(int *fd, char **argv, char **envp)
 	if (outfile == -1)
 		error_exit("open error\n", 1);
 	close(fd[1]);
-	if (dup2(fd[0], STDIN_FILENO) == -1) // 표준입력을 pipe로 변경 
+	if (dup2(fd[0], STDIN_FILENO) == -1)
 		error_exit("dup2 error\n", 1);
 	close(fd[0]);
-	if (dup2(outfile, STDOUT_FILENO) == -1) // 표준출력을 outfile로 변경
+	if (dup2(outfile, STDOUT_FILENO) == -1)
 		error_exit("dup2 error\n", 1);
 	close(outfile);
 	execute_cmd(argv[3], envp);

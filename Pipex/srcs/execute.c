@@ -6,7 +6,7 @@
 /*   By: jungchoi <jungchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 15:20:11 by jungchoi          #+#    #+#             */
-/*   Updated: 2022/11/05 21:02:55 by jungchoi         ###   ########.fr       */
+/*   Updated: 2022/11/14 11:54:52 by jungchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*get_path(char *cmd, char **envp)
 	int		i;
 	char	**split_path;
 	char	*path;
-	
+
 	i = 0;
 	while (envp[i] && (ft_strncmp("PATH", envp[i], 4) != 0))
 		i++;
