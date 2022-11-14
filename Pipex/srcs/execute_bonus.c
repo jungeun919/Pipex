@@ -6,7 +6,7 @@
 /*   By: jungchoi <jungchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 16:50:38 by jungchoi          #+#    #+#             */
-/*   Updated: 2022/11/14 11:55:47 by jungchoi         ###   ########.fr       */
+/*   Updated: 2022/11/14 12:36:12 by jungchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	execute_cmd(char *argv, char **envp)
 	cmd = ft_strjoin("/", split_cmd[0]);
 	path = get_path(cmd, envp);
 	if (!path)
-		error_exit("path error\n", 1);
+		error_exit("path error\n", 1, NULL);
 	if (execve(path, split_cmd, envp) == -1)
-		error_exit("execve error\n", 127);
+		error_exit("execve error\n", 127, NULL);
 }
 
 char	*get_path(char *cmd, char **envp)
@@ -68,8 +68,10 @@ void	free_split(char **str)
 	free(str);
 }
 
-void	error_exit(char *str, int status)
+void	error_exit(char *str, int status, t_info *info)
 {
+	if (info->is_heredoc == 1)
+		unlink(".here_doc_temp");
 	ft_putstr_fd(str, 2);
 	exit(status);
 }

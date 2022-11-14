@@ -6,7 +6,7 @@
 /*   By: jungchoi <jungchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 19:26:14 by jungchoi          #+#    #+#             */
-/*   Updated: 2022/11/14 11:58:20 by jungchoi         ###   ########.fr       */
+/*   Updated: 2022/11/14 12:10:09 by jungchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	parent_process(int *fd, char **argv, char **envp)
 {
 	int	outfile;
 
-	outfile = open(argv[4], O_RDWR | O_CREAT | O_TRUNC, 0644);
+	outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile == -1)
 		error_exit("open error\n", 1);
 	close(fd[1]);
