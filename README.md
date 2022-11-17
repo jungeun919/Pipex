@@ -1,3 +1,13 @@
+## Mandatory : 리눅스 파이프와 리다이렉션 구현하기
+## Bonus : 다중 파이프와 히어독 구현하기
+
+### [개념 정리](https://www.notion.so/dev-jungeun/Pipex-7dc13565963e4d338ec0cf62fa1ffcfd)
+* Block/Non-Block, Synchronous/Asynchronous
+* Redirection, Here-doc
+* 허용함수 정리
+* 환경변수 PATH
+
+
 ## Mandatory
 ```bash
 $> ./pipex file1 cmd1 cmd2 file2
